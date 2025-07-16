@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: react-intro
+    expose:
+      - "80"
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx-fallback
+    ports:
+      - "8080:80"
+    volumes:
+      - ./fallback/default.conf:/etc/nginx/conf.d/default.conf
+      - ./fallback/fallback.html:/usr/share/nginx/html/fallback.html
+    depends_on:
+      - frontend
